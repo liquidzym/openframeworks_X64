@@ -1,7 +1,7 @@
 //
 // HashMap.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/HashMap.h#2 $
+// $Id: //poco/1.4/Foundation/include/Poco/HashMap.h#1 $
 //
 // Library: Foundation
 // Package: Hashing
@@ -179,12 +179,6 @@ public:
 		ValueType value(key);
 		return _table.find(value);
 	}
-	
-	std::size_t count(const KeyType& key) const
-	{
-		ValueType value(key);
-		return _table.find(value) != _table.end() ? 1 : 0;
-	}	
 
 	std::pair<Iterator, bool> insert(const PairType& pair)
 	{

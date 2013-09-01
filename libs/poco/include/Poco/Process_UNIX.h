@@ -1,7 +1,7 @@
 //
 // Process_UNIX.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Process_UNIX.h#3 $
+// $Id: //poco/1.4/Foundation/include/Poco/Process_UNIX.h#2 $
 //
 // Library: Foundation
 // Package: Processes
@@ -44,7 +44,6 @@
 #include "Poco/RefCountedObject.h"
 #include <unistd.h>
 #include <vector>
-#include <map>
 
 
 namespace Poco {
@@ -72,31 +71,13 @@ class Foundation_API ProcessImpl
 public:
 	typedef pid_t PIDImpl;
 	typedef std::vector<std::string> ArgsImpl;
-	typedef std::map<std::string, std::string> EnvImpl;
 	
 	static PIDImpl idImpl();
 	static void timesImpl(long& userTime, long& kernelTime);
-	static ProcessHandleImpl* launchImpl(
-		const std::string& command, 
-		const ArgsImpl& args, 
-		const std::string& initialDirectory,
-		Pipe* inPipe, 
-		Pipe* outPipe, 
-		Pipe* errPipe,
-		const EnvImpl& env);
+	static ProcessHandleImpl* launchImpl(const std::string& command, const ArgsImpl& args, Pipe* inPipe, Pipe* outPipe, Pipe* errPipe);		
 	static void killImpl(const ProcessHandleImpl& handle);
 	static void killImpl(PIDImpl pid);
 	static void requestTerminationImpl(PIDImpl pid);
-
-private:
-	static ProcessHandleImpl* launchByForkExecImpl(
-		const std::string& command, 
-		const ArgsImpl& args, 
-		const std::string& initialDirectory,
-		Pipe* inPipe, 
-		Pipe* outPipe, 
-		Pipe* errPipe,
-		const EnvImpl& env);
 };
 
 

@@ -1,7 +1,7 @@
 //
 // Thread.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Thread.h#5 $
+// $Id: //poco/1.4/Foundation/include/Poco/Thread.h#3 $
 //
 // Library: Foundation
 // Package: Threading
@@ -87,11 +87,6 @@ public:
 		PRIO_HIGH    = PRIO_HIGH_IMPL,   /// A higher than normal thread priority.
 		PRIO_HIGHEST = PRIO_HIGHEST_IMPL /// The highest thread priority.
 	};
-	
-	enum Policy
-	{
-		POLICY_DEFAULT = POLICY_DEFAULT_IMPL
-	};
 
 	Thread();
 		/// Creates a thread. Call start() to start it.
@@ -126,13 +121,10 @@ public:
 	Priority getPriority() const;
 		/// Returns the thread's priority.
 
-	void setOSPriority(int prio, int policy = POLICY_DEFAULT);
+	void setOSPriority(int prio);
 		/// Sets the thread's priority, using an operating system specific
 		/// priority value. Use getMinOSPriority() and getMaxOSPriority() to
-		/// obtain mininum and maximum priority values. Additionally,
-		/// a scheduling policy can be specified. The policy is currently
-		/// only used on POSIX platforms where the values SCHED_OTHER (default),
-		/// SCHED_FIFO and SCHED_RR are supported.
+		/// obtain mininum and maximum priority values.
 		
 	int getOSPriority() const;
 		/// Returns the thread's priority, expressed as an operating system
@@ -140,13 +132,13 @@ public:
 		///
 		/// May return 0 if the priority has not been explicitly set.
 		
-	static int getMinOSPriority(int policy = POLICY_DEFAULT);
+	static int getMinOSPriority();
 		/// Returns the mininum operating system-specific priority value,
-		/// which can be passed to setOSPriority() for the given policy.
+		/// which can be passed to setOSPriority().
 		
-	static int getMaxOSPriority(int policy = POLICY_DEFAULT);
+	static int getMaxOSPriority();
 		/// Returns the maximum operating system-specific priority value,
-		/// which can be passed to setOSPriority() for the given policy.
+		/// which can be passed to setOSPriority().
 
 	void setStackSize(int size);
 		/// Sets the thread's stack size in bytes.
@@ -278,9 +270,9 @@ inline Thread* Thread::current()
 }
 
 
-inline void Thread::setOSPriority(int prio, int policy)
+inline void Thread::setOSPriority(int prio)
 {
-	setOSPriorityImpl(prio, policy);	
+	setOSPriorityImpl(prio);	
 }
 
 	
@@ -290,15 +282,15 @@ inline int Thread::getOSPriority() const
 }
 
 	
-inline int Thread::getMinOSPriority(int policy)
+inline int Thread::getMinOSPriority()
 {
-	return ThreadImpl::getMinOSPriorityImpl(policy);
+	return ThreadImpl::getMinOSPriorityImpl();
 }
 
 	
-inline int Thread::getMaxOSPriority(int policy)
+inline int Thread::getMaxOSPriority()
 {
-	return ThreadImpl::getMaxOSPriorityImpl(policy);
+	return ThreadImpl::getMaxOSPriorityImpl();
 }
 
 

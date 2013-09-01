@@ -1,7 +1,7 @@
 //
 // AbstractEvent.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/AbstractEvent.h#4 $
+// $Id: //poco/1.4/Foundation/include/Poco/AbstractEvent.h#3 $
 //
 // Library: Foundation
 // Package: Events
@@ -171,8 +171,6 @@ class AbstractEvent
 	/// to create the PriorityDelegate.
 {
 public:
-	typedef TArgs Args;
-
 	AbstractEvent(): 
 		_executeAsync(this, &AbstractEvent::executeAsyncImpl),
 		_enabled(true)
@@ -345,6 +343,7 @@ private:
 	AbstractEvent(const AbstractEvent& other);
 	AbstractEvent& operator = (const AbstractEvent& other);
 };
+
 template <class TStrategy, class TDelegate, class TMutex> 
 class AbstractEvent<void,TStrategy,TDelegate,TMutex>
 	/// An AbstractEvent is the base class of all events. 
@@ -637,7 +636,6 @@ private:
 };
 
 } // namespace Poco
-
 
 
 #endif // Foundation_AbstractFoundation_INCLUDED

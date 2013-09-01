@@ -12,6 +12,7 @@
 #include "scene.h"
 #include "postprocess.h"
 //*/
+#include "ofxAssimpTexture.h"
 class aiMesh;
 
 class ofxAssimpMeshHelper {
@@ -21,11 +22,13 @@ public:
 	ofxAssimpMeshHelper();
     ~ofxAssimpMeshHelper();
     
+    bool hasTexture();
+    ofTexture * getTexturePtr();
     aiMesh * mesh; // pointer to the aiMesh we represent.
 
     ofVbo vbo;
     
-    ofTexture texture;
+    ofxAssimpTexture * assimpTexture;
     vector<ofIndexType> indices;
     
     ofMaterial material;
@@ -35,8 +38,8 @@ public:
     bool twoSided;
     bool hasChanged;
 
-    std::vector<aiVector3D> animatedPos;
-    std::vector<aiVector3D> animatedNorm;
+    vector<aiVector3D> animatedPos;
+    vector<aiVector3D> animatedNorm;
 
     ofMesh cachedMesh;
     bool validCache;

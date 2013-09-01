@@ -1,7 +1,7 @@
 //
 // Thread_POSIX.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Thread_POSIX.h#6 $
+// $Id: //poco/1.4/Foundation/include/Poco/Thread_POSIX.h#3 $
 //
 // Library: Foundation
 // Package: Threading
@@ -75,12 +75,7 @@ public:
 		PRIO_HIGH_IMPL,
 		PRIO_HIGHEST_IMPL
 	};
-	
-	enum Policy
-	{
-		POLICY_DEFAULT_IMPL = SCHED_OTHER
-	};
-	
+
 	struct CallbackData: public RefCountedObject
 	{
 		CallbackData(): callback(0), pData(0)
@@ -97,10 +92,10 @@ public:
 	TIDImpl tidImpl() const;
 	void setPriorityImpl(int prio);
 	int getPriorityImpl() const;
-	void setOSPriorityImpl(int prio, int policy = SCHED_OTHER);
+	void setOSPriorityImpl(int prio);
 	int getOSPriorityImpl() const;
-	static int getMinOSPriorityImpl(int policy);
-	static int getMaxOSPriorityImpl(int policy);
+	static int getMinOSPriorityImpl();
+	static int getMaxOSPriorityImpl();
 	void setStackSizeImpl(int size);
 	int getStackSizeImpl() const;
 	void startImpl(Runnable& target);
@@ -117,8 +112,8 @@ public:
 protected:
 	static void* runnableEntry(void* pThread);
 	static void* callableEntry(void* pThread);
-	static int mapPrio(int prio, int policy = SCHED_OTHER);
-	static int reverseMapPrio(int osPrio, int policy = SCHED_OTHER);
+	static int mapPrio(int prio);
+	static int reverseMapPrio(int osPrio);
 
 private:
 	class CurrentThreadHolder
@@ -153,7 +148,7 @@ private:
 			pCallbackTarget(0),
 			thread(0),
 			prio(PRIO_NORMAL_IMPL),
-			policy(SCHED_OTHER),
+			osPrio(0),
 			done(false),
 			stackSize(POCO_THREAD_STACK_SIZE)
 		{
@@ -169,7 +164,6 @@ private:
 		pthread_t     thread;
 		int           prio;
 		int           osPrio;
-		int           policy;
 		Event         done;
 		std::size_t   stackSize;
 	};
@@ -215,7 +209,7 @@ inline void ThreadImpl::yieldImpl()
 
 inline int ThreadImpl::getStackSizeImpl() const
 {
-	return static_cast<int>(_pData->stackSize);
+	return _pData->stackSize;
 }
 
 
