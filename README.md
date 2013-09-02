@@ -3,6 +3,6 @@ openframeworks_X64
 
 x64 openframeworks with VS2012
 
-without cairo, x64 gstreamer libs instead quicktime for video stuff
+only working with openframeworks 0.8.0 and later version
 
-TODO: videoInput still not working
+without cairo, x_64 gstreamer libs instead quicktime for video stuff
