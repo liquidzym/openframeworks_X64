@@ -5,9 +5,9 @@
 #include "ofBaseTypes.h"
 #include "ofTypes.h"
 
-//使用gstreamer的话加这2行
 #define OF_VIDEO_PLAYER_GSTREAMER
 #undef	OF_VIDEO_PLAYER_QUICKTIME
+
 
 #ifdef OF_VIDEO_PLAYER_GSTREAMER
 	#include "ofGstVideoPlayer.h"
@@ -83,7 +83,7 @@ class ofVideoPlayer : public ofBaseVideoPlayer,public ofBaseVideoDraws{
         void				setAnchorPercent(float xPct, float yPct);	//set the anchor as a percentage of the image width/height ( 0.0-1.0 range )
         void				setAnchorPoint(float x, float y);				//set the anchor point in pixels
         void				resetAnchor();								//resets the anchor to (0, 0)
-
+		void                syncToMovie(ofPtr<ofBaseVideoPlayer> player);
 		void 				setPaused(bool bPause);
 
 		int					getCurrentFrame();

@@ -10,7 +10,7 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
@@ -57,7 +57,7 @@
  */
 /* ====================================================================
  * Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.
- * ECDH support in OpenSSL originally developed by 
+ * ECDH support in OpenSSL originally developed by
  * SUN MICROSYSTEMS, INC., and contributed to the OpenSSL project.
  */
 
@@ -140,6 +140,13 @@ extern "C" {
  * Normally, ENGINEs don't declare this flag so ENGINE_by_id() just increments
  * the existing ENGINE's structural reference count. */
 #define ENGINE_FLAGS_BY_ID_COPY		(int)0x0004
+
+/* This flag if for an ENGINE that does not want its methods registered as
+ * part of ENGINE_register_all_complete() for example if the methods are
+ * not usable as default methods.
+ */
+
+#define ENGINE_FLAGS_NO_REGISTER_ALL	(int)0x0008
 
 /* ENGINEs can support their own command types, and these flags are used in
  * ENGINE_CTRL_GET_CMD_FLAGS to indicate to the caller what kind of input each
@@ -344,6 +351,8 @@ void ENGINE_load_gost(void);
 #endif
 #endif
 void ENGINE_load_cryptodev(void);
+void ENGINE_load_rsax(void);
+void ENGINE_load_rdrand(void);
 void ENGINE_load_builtin_engines(void);
 
 /* Get and set global flags (ENGINE_TABLE_FLAG_***) for the implementation
@@ -677,6 +686,7 @@ typedef struct st_dynamic_fns {
  * can be fully instantiated with IMPLEMENT_DYNAMIC_CHECK_FN(). */
 typedef unsigned long (*dynamic_v_check_fn)(unsigned long ossl_version);
 #define IMPLEMENT_DYNAMIC_CHECK_FN() \
+	OPENSSL_EXPORT unsigned long v_check(unsigned long v); \
 	OPENSSL_EXPORT unsigned long v_check(unsigned long v) { \
 		if(v >= OSSL_DYNAMIC_OLDEST) return OSSL_DYNAMIC_VERSION; \
 		return 0; }
@@ -699,6 +709,8 @@ typedef unsigned long (*dynamic_v_check_fn)(unsigned long ossl_version);
 typedef int (*dynamic_bind_engine)(ENGINE *e, const char *id,
 				const dynamic_fns *fns);
 #define IMPLEMENT_DYNAMIC_BIND_FN(fn) \
+	OPENSSL_EXPORT \
+	int bind_engine(ENGINE *e, const char *id, const dynamic_fns *fns); \
 	OPENSSL_EXPORT \
 	int bind_engine(ENGINE *e, const char *id, const dynamic_fns *fns) { \
 		if(ENGINE_get_static_state() == fns->static_state) goto skip_cbs; \

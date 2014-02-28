@@ -8,7 +8,6 @@
 #include "ofGLProgrammableRenderer.h"
 
 
-
 #ifdef TARGET_WIN32
 	#define GLUT_BUILDING_LIB
 	#include "glut.h"
@@ -171,7 +170,7 @@ static void fixCloseWindowOnWin32(){
 	DragAcceptFiles (handle, TRUE);
 
 	//store the current message event handler for the window
-	currentWndProc = (WNDPROC)GetWindowLongPtr(handle,GWLP_WNDPROC);//¸ÄÎªx64¼æÈÝµÄ
+	currentWndProc = (WNDPROC)GetWindowLongPtr(handle, GWLP_WNDPROC);
 
 	//tell the window to now use our event handler!
 	SetWindowLongPtr(handle, GWLP_WNDPROC, (long)winProc);
@@ -358,6 +357,7 @@ void ofAppGlutWindow::setWindowIcon(const ofPixels & iconPixels){
 
 	XChangeProperty(m_display, m_window, XInternAtom(m_display, "_NET_WM_ICON", False), XA_CARDINAL, 32,
 						 PropModeReplace,  (const unsigned char*)buffer,  length);
+	delete[] buffer;
 	XFlush(m_display);
 }
 #endif

@@ -11,6 +11,7 @@
 #include "ofBaseTypes.h"
 #include "ofTexture.h"
 #include "ofMatrix4x4.h"
+#include "Poco/RegularExpression.h"
 #include <map>
 #include "ofAppBaseWindow.h"
 
@@ -107,7 +108,7 @@ public:
 	
 	// these methods create and compile a shader from source or file
 	// type: GL_VERTEX_SHADER, GL_FRAGMENT_SHADER, GL_GEOMETRY_SHADER_EXT etc.
-	bool setupShaderFromSource(GLenum type, string source);
+	bool setupShaderFromSource(GLenum type, string source, string sourceDirectoryPath = "");
 	bool setupShaderFromFile(GLenum type, string filename);
 	
 	// links program with all compiled shaders
@@ -133,6 +134,9 @@ public:
 		TEXCOORD_ATTRIBUTE
 	};
 
+	/// @brief returns the shader source as it was passed to the GLSL compiler
+	/// @param type (GL_VERTEX_SHADER | GL_FRAGMENT_SHADER | GL_GEOMETRY_SHADER_EXT) the shader source you'd like to inspect.
+	string getShaderSource(GLenum type);
 
 
 private:
@@ -140,6 +144,7 @@ private:
 	bool bLoaded;
 	map<GLenum, GLuint> shaders;
 	map<string, GLint> uniformLocations;
+	map<GLenum, string> shaderSource;
 	
 	GLint getUniformLocation(const string & name);
 	
@@ -148,6 +153,15 @@ private:
 	void checkShaderInfoLog(GLuint shader, GLenum type, ofLogLevel logLevel);
 	
 	static string nameForType(GLenum type);
+	
+    /// @brief			Mimics the #include behaviour of the c preprocessor
+	/// @description	Includes files specified using the
+	///					'#pragma include <filepath>' directive.
+	/// @note			Include paths are always specified _relative to the including file's current path_
+	///	@note			Recursive #pragma include statements are possible
+	/// @note			Includes will be processed up to 32 levels deep
+    string parseForIncludes( const string& source, const string& sourceDirectoryPath = "");
+    string parseForIncludes( const string& source, vector<string>& included, int level = 0, const string& sourceDirectoryPath = "");
 	
 	void checkAndCreateProgram();
 	

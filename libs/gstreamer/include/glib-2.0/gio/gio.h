@@ -38,6 +38,7 @@
 #include <gio/gasyncresult.h>
 #include <gio/gbufferedinputstream.h>
 #include <gio/gbufferedoutputstream.h>
+#include <gio/gbytesicon.h>
 #include <gio/gcancellable.h>
 #include <gio/gcharsetconverter.h>
 #include <gio/gcontenttype.h>
@@ -99,6 +100,7 @@
 #include <gio/gpollableinputstream.h>
 #include <gio/gpollableoutputstream.h>
 #include <gio/gpollableutils.h>
+#include <gio/gpropertyaction.h>
 #include <gio/gproxy.h>
 #include <gio/gproxyaddress.h>
 #include <gio/gproxyaddressenumerator.h>
@@ -122,6 +124,8 @@
 #include <gio/gsocketlistener.h>
 #include <gio/gsocketservice.h>
 #include <gio/gsrvtarget.h>
+#include <gio/gsimpleproxyresolver.h>
+#include <gio/gtask.h>
 #include <gio/gtcpconnection.h>
 #include <gio/gtcpwrapperconnection.h>
 #include <gio/gtestdbus.h>

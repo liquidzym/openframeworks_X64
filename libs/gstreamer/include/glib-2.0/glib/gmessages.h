@@ -24,12 +24,12 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
+#ifndef __G_MESSAGES_H__
+#define __G_MESSAGES_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_MESSAGES_H__
-#define __G_MESSAGES_H__
 
 #include <stdarg.h>
 #include <glib/gtypes.h>
@@ -45,8 +45,9 @@ G_BEGIN_DECLS
 
 /* calculate a string size, guaranteed to fit format + args.
  */
+GLIB_AVAILABLE_IN_ALL
 gsize	g_printf_string_upper_bound (const gchar* format,
-				     va_list	  args);
+				     va_list	  args) G_GNUC_PRINTF(1, 0);
 
 /* Log level shift offset for user defined
  * log levels (0-7 are used by GLib).
@@ -82,45 +83,55 @@ typedef void            (*GLogFunc)             (const gchar   *log_domain,
 
 /* Logging mechanism
  */
+GLIB_AVAILABLE_IN_ALL
 guint           g_log_set_handler       (const gchar    *log_domain,
                                          GLogLevelFlags  log_levels,
                                          GLogFunc        log_func,
                                          gpointer        user_data);
+GLIB_AVAILABLE_IN_ALL
 void            g_log_remove_handler    (const gchar    *log_domain,
                                          guint           handler_id);
+GLIB_AVAILABLE_IN_ALL
 void            g_log_default_handler   (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *message,
                                          gpointer        unused_data);
+GLIB_AVAILABLE_IN_ALL
 GLogFunc        g_log_set_default_handler (GLogFunc      log_func,
 					   gpointer      user_data);
+GLIB_AVAILABLE_IN_ALL
 void            g_log                   (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *format,
                                          ...) G_GNUC_PRINTF (3, 4);
+GLIB_AVAILABLE_IN_ALL
 void            g_logv                  (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *format,
-                                         va_list         args);
+                                         va_list         args) G_GNUC_PRINTF(3, 0);
+GLIB_AVAILABLE_IN_ALL
 GLogLevelFlags  g_log_set_fatal_mask    (const gchar    *log_domain,
                                          GLogLevelFlags  fatal_mask);
+GLIB_AVAILABLE_IN_ALL
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 
 /* internal */
-G_GNUC_INTERNAL void	_g_log_fallback_handler	(const gchar   *log_domain,
+void	_g_log_fallback_handler	(const gchar   *log_domain,
 						 GLogLevelFlags log_level,
 						 const gchar   *message,
 						 gpointer       unused_data);
 
 /* Internal functions, used to implement the following macros */
+GLIB_AVAILABLE_IN_ALL
 void g_return_if_fail_warning (const char *log_domain,
 			       const char *pretty_function,
-			       const char *expression);
+			       const char *expression) G_ANALYZER_NORETURN;
+GLIB_AVAILABLE_IN_ALL
 void g_warn_message           (const char     *domain,
                                const char     *file,
                                int             line,
                                const char     *func,
-                               const char     *warnexpr);
+                               const char     *warnexpr) G_ANALYZER_NORETURN;
 GLIB_DEPRECATED
 void g_assert_warning         (const char *log_domain,
 			       const char *file,
@@ -132,7 +143,8 @@ void g_assert_warning         (const char *log_domain,
 #ifndef G_LOG_DOMAIN
 #define G_LOG_DOMAIN    ((gchar*) 0)
 #endif  /* G_LOG_DOMAIN */
-#ifdef G_HAVE_ISO_VARARGS
+
+#if defined(G_HAVE_ISO_VARARGS) && !G_ANALYZER_ANALYZING
 /* for(;;) ; so that GCC knows that control doesn't go past g_error().
  * Put space before ending semicolon to avoid C++ build warnings.
  */
@@ -155,7 +167,7 @@ void g_assert_warning         (const char *log_domain,
 #define g_debug(...)    g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_DEBUG,    \
                                __VA_ARGS__)
-#elif defined(G_HAVE_GNUC_VARARGS)
+#elif defined(G_HAVE_GNUC_VARARGS)  && !G_ANALYZER_ANALYZING
 #define g_error(format...)    G_STMT_START {                 \
                                 g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_ERROR,    \
@@ -178,7 +190,7 @@ void g_assert_warning         (const char *log_domain,
 #else   /* no varargs macros */
 static void
 g_error (const gchar *format,
-         ...)
+         ...) G_ANALYZER_NORETURN
 {
   va_list args;
   va_start (args, format);
@@ -198,7 +210,7 @@ g_message (const gchar *format,
 }
 static void
 g_critical (const gchar *format,
-            ...)
+            ...) G_ANALYZER_NORETURN
 {
   va_list args;
   va_start (args, format);
@@ -233,11 +245,15 @@ g_debug (const gchar *format,
  * These are called with the complete formatted string to output.
  */
 typedef void    (*GPrintFunc)           (const gchar    *string);
+GLIB_AVAILABLE_IN_ALL
 void            g_print                 (const gchar    *format,
                                          ...) G_GNUC_PRINTF (1, 2);
+GLIB_AVAILABLE_IN_ALL
 GPrintFunc      g_set_print_handler     (GPrintFunc      func);
+GLIB_AVAILABLE_IN_ALL
 void            g_printerr              (const gchar    *format,
                                          ...) G_GNUC_PRINTF (1, 2);
+GLIB_AVAILABLE_IN_ALL
 GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
 /**
@@ -360,7 +376,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
        {							\
 	 g_log (G_LOG_DOMAIN,					\
 		G_LOG_LEVEL_CRITICAL,				\
-		"file %s: line %d: assertion `%s' failed",	\
+		"file %s: line %d: assertion '%s' failed",	\
 		__FILE__,					\
 		__LINE__,					\
 		#expr);						\
@@ -372,7 +388,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
        {							\
 	 g_log (G_LOG_DOMAIN,					\
 		G_LOG_LEVEL_CRITICAL,				\
-		"file %s: line %d: assertion `%s' failed",	\
+		"file %s: line %d: assertion '%s' failed",	\
 		__FILE__,					\
 		__LINE__,					\
 		#expr);						\

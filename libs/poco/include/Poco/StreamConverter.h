@@ -1,4 +1,3 @@
-#pragma warning(disable:4250)
 //
 // StreamConverter.h
 //

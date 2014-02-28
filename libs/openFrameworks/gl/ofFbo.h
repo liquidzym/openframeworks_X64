@@ -16,6 +16,7 @@ public:
 	void allocate(Settings settings = Settings());
 	bool isAllocated();
 
+	using ofBaseDraws::draw;
 	void draw(float x, float y);
 	void draw(float x, float y, float width, float height);
 
@@ -86,6 +87,7 @@ public:
 		int		numSamples;				// number of samples for multisampling (set 0 to disable)
 
 		Settings();
+		bool operator!=(const Settings & other);
 	};
 private:
 	Settings 			settings;

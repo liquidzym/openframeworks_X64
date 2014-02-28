@@ -28,12 +28,12 @@
  * not refer to variables from glibconfig.h
  */
 
+#ifndef __G_MACROS_H__
+#define __G_MACROS_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_MACROS_H__
-#define __G_MACROS_H__
 
 /* We include stddef.h to get the system's definition of NULL
  */
@@ -120,6 +120,12 @@
   _Pragma ("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
 #define G_GNUC_END_IGNORE_DEPRECATIONS			\
   _Pragma ("GCC diagnostic pop")
+#elif defined (_MSC_VER) && (_MSC_VER >= 1500)
+#define G_GNUC_BEGIN_IGNORE_DEPRECATIONS		\
+  __pragma (warning (push))  \
+  __pragma (warning (disable : 4996))
+#define G_GNUC_END_IGNORE_DEPRECATIONS			\
+  __pragma (warning (pop))
 #else
 #define G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 #define G_GNUC_END_IGNORE_DEPRECATIONS
@@ -152,6 +158,19 @@
 #endif  /* !__GNUC__ */
 #endif  /* !G_DISABLE_DEPRECATED */
 
+/* Clang feature detection: http://clang.llvm.org/docs/LanguageExtensions.html */
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+
+#if __has_feature(attribute_analyzer_noreturn)
+#define G_ANALYZER_ANALYZING 1
+#define G_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
+#else
+#define G_ANALYZER_ANALYZING 0
+#define G_ANALYZER_NORETURN
+#endif
+
 #define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
 #define	G_STRINGIFY_ARG(contents)	#contents
 
@@ -159,9 +178,9 @@
 #define G_PASTE_ARGS(identifier1,identifier2) identifier1 ## identifier2
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
 #ifdef __COUNTER__
-#define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __COUNTER__)[(expr) ? 1 : -1]
+#define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __COUNTER__)[(expr) ? 1 : -1] G_GNUC_UNUSED
 #else
-#define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __LINE__)[(expr) ? 1 : -1]
+#define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __LINE__)[(expr) ? 1 : -1] G_GNUC_UNUSED
 #endif
 #define G_STATIC_ASSERT_EXPR(expr) ((void) sizeof (char[(expr) ? 1 : -1]))
 #endif
@@ -174,11 +193,11 @@
 #endif
 
 /* Provide a string identifying the current function, non-concatenatable */
-#if defined (__GNUC__)
+#if defined (__GNUC__) && defined (__cplusplus)
 #  define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
 #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 19901L
 #  define G_STRFUNC     ((const char*) (__func__))
-#elif defined(_MSC_VER) && (_MSC_VER > 1300)
+#elif defined (__GNUC__) || (defined(_MSC_VER) && (_MSC_VER > 1300))
 #  define G_STRFUNC     ((const char*) (__FUNCTION__))
 #else
 #  define G_STRFUNC     ((const char*) ("???"))
@@ -321,7 +340,11 @@
 #elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
 #define G_UNAVAILABLE(maj,min) __declspec(deprecated("is not available before " #maj "." #min))
 #else
-#define G_UNAVAILABLE(maj,min)
+#define G_UNAVAILABLE(maj,min) G_DEPRECATED
+#endif
+
+#ifndef _GLIB_EXTERN
+#define _GLIB_EXTERN extern
 #endif
 
 /* These macros are used to mark deprecated functions in GLib headers,
@@ -331,13 +354,13 @@
  */
 
 #ifdef GLIB_DISABLE_DEPRECATION_WARNINGS
-#define GLIB_DEPRECATED
-#define GLIB_DEPRECATED_FOR(f)
-#define GLIB_UNAVAILABLE(maj,min)
+#define GLIB_DEPRECATED _GLIB_EXTERN
+#define GLIB_DEPRECATED_FOR(f) _GLIB_EXTERN
+#define GLIB_UNAVAILABLE(maj,min) _GLIB_EXTERN
 #else
-#define GLIB_DEPRECATED G_DEPRECATED
-#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f)
-#define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min)
+#define GLIB_DEPRECATED G_DEPRECATED _GLIB_EXTERN
+#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GLIB_EXTERN
+#define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min) _GLIB_EXTERN
 #endif
 
 #endif /* __G_MACROS_H__ */

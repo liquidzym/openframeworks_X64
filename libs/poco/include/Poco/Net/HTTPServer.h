@@ -1,7 +1,7 @@
 //
 // HTTPServer.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/HTTPServer.h#3 $
+// $Id: //poco/1.4/Net/include/Poco/Net/HTTPServer.h#1 $
 //
 // Library: Net
 // Package: HTTPServer
@@ -73,19 +73,37 @@ class Net_API HTTPServer: public TCPServer
 	/// information about the HTTP protocol.
 {
 public:
+	HTTPServer(HTTPRequestHandlerFactory::Ptr pFactory, Poco::UInt16 portNumber = 80, HTTPServerParams::Ptr pParams = new HTTPServerParams);
+		/// Creates HTTPServer listening on the given port (default 80).
+		///
+		/// The server takes ownership of the HTTPRequstHandlerFactory
+		/// and deletes it when it's no longer needed.
+		///
+		/// New threads are taken from the default thread pool.
+
 	HTTPServer(HTTPRequestHandlerFactory::Ptr pFactory, const ServerSocket& socket, HTTPServerParams::Ptr pParams);
 		/// Creates the HTTPServer, using the given ServerSocket.
+		///
+		/// The server takes ownership of the HTTPRequstHandlerFactory
+		/// and deletes it when it's no longer needed.
+		///
+		/// The server also takes ownership of the HTTPServerParams object.
 		///
 		/// New threads are taken from the default thread pool.
 
 	HTTPServer(HTTPRequestHandlerFactory::Ptr pFactory, Poco::ThreadPool& threadPool, const ServerSocket& socket, HTTPServerParams::Ptr pParams);
 		/// Creates the HTTPServer, using the given ServerSocket.
 		///
+		/// The server takes ownership of the HTTPRequstHandlerFactory
+		/// and deletes it when it's no longer needed.
+		///
+		/// The server also takes ownership of the HTTPServerParams object.
+		///
 		/// New threads are taken from the given thread pool.
 
 	~HTTPServer();
 		/// Destroys the HTTPServer and its HTTPRequestHandlerFactory.
-	
+
 	void stopAll(bool abortCurrent = false);
 		/// Stops the server. In contrast to TCPServer::stop(), which also
 		/// stops the server, but allows all client connections to finish at
@@ -95,7 +113,7 @@ public:
 		/// complete. If abortCurrent is false, the underlying sockets of
 		/// all client connections are shut down, causing all requests
 		/// to abort.
-		
+
 private:
 	HTTPRequestHandlerFactory::Ptr _pFactory;
 };

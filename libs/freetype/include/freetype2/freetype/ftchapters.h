@@ -1,7 +1,7 @@
 /***************************************************************************/
 /*                                                                         */
 /* This file defines the structure of the FreeType reference.              */
-/* It is used by the python script which generates the HTML files.         */
+/* It is used by the python script that generates the HTML files.          */
 /*                                                                         */
 /***************************************************************************/
 
@@ -67,13 +67,15 @@
 /***************************************************************************/
 /*                                                                         */
 /* <Chapter>                                                               */
-/*    auto_hinter                                                          */
+/*    module_specific                                                      */
 /*                                                                         */
 /* <Title>                                                                 */
-/*    The Auto-Hinter                                                      */
+/*    Controlling FreeType Modules                                         */
 /*                                                                         */
 /* <Sections>                                                              */
 /*    auto_hinter                                                          */
+/*    cff_driver                                                           */
+/*    tt_driver                                                            */
 /*                                                                         */
 /***************************************************************************/
 

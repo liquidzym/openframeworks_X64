@@ -1,7 +1,7 @@
 //
 // ServerApplication.h
 //
-// $Id: //poco/1.4/Util/include/Poco/Util/ServerApplication.h#4 $
+// $Id: //poco/1.4/Util/include/Poco/Util/ServerApplication.h#3 $
 //
 // Library: Util
 // Package: Application
@@ -46,7 +46,6 @@
 #if defined(POCO_OS_FAMILY_WINDOWS)
 #include "Poco/NamedEvent.h"
 #endif
-#include <iostream>
 
 
 namespace Poco {
@@ -197,6 +196,9 @@ private:
 	void handlePidFile(const std::string& name, const std::string& value);
 	bool isDaemon(int argc, char** argv);
 	void beDaemon();
+#if defined(POCO_ANDROID)
+	static Poco::Event _terminate;
+#endif
 #elif defined(POCO_OS_FAMILY_WINDOWS)
 #if !defined(_WIN32_WCE)
 	enum Action

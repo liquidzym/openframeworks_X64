@@ -1,7 +1,7 @@
 //
 // WebSocketImpl.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/WebSocketImpl.h#6 $
+// $Id: //poco/1.4/Net/include/Poco/Net/WebSocketImpl.h#5 $
 //
 // Library: Net
 // Package: WebSocket
@@ -78,7 +78,7 @@ public:
 	virtual int receiveFrom(void* buffer, int length, SocketAddress& address, int flags = 0);
 	virtual void sendUrgent(unsigned char data);
 	virtual bool secure() const;
-	virtual void setSendTimeout(const Poco::Timespan& timeout);	
+	virtual void setSendTimeout(const Poco::Timespan& timeout); 
 	virtual Poco::Timespan getSendTimeout();
 	virtual void setReceiveTimeout(const Poco::Timespan& timeout);
 	virtual Poco::Timespan getReceiveTimeout();

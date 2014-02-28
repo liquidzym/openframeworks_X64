@@ -206,8 +206,8 @@ public:
 	{
 		return *_object.get();
 	}
-      
-	bool isAutoDelete(B* pObject) const
+
+	bool isAutoDelete(B* /*pObject*/) const
 	{
 		return true;
 	}

@@ -57,7 +57,7 @@ along with the GNU MP Library.  If not, see http://www.gnu.org/licenses/.  */
 /* Instantiated by configure. */
 #if ! defined (__GMP_WITHIN_CONFIGURE)
 /* #undef _LONG_LONG_LIMB */
-#define __GMP_LIBGMP_DLL  1
+#define __GMP_LIBGMP_DLL  0
 #endif
 
 
@@ -2267,7 +2267,7 @@ enum
 
 /* Define CC and CFLAGS which were used to build this version of GMP */
 #define __GMP_CC "i686-w64-mingw32-gcc -std=gnu99"
-#define __GMP_CFLAGS "-g -O2 -DWINVER=0x0501"
+#define __GMP_CFLAGS "-Wall -g -O2 -DWINVER=0x0501"
 
 /* Major version number is the value of __GNU_MP__ too, above and in mp.h. */
 #define __GNU_MP_VERSION 5

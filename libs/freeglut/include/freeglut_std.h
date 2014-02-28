@@ -65,13 +65,7 @@
 /* Windows static library */
 #   ifdef FREEGLUT_STATIC
 
-#       define FGAPI
-#       define FGAPIENTRY
-
-        /* Link with Win32 static freeglut lib */
-#       if FREEGLUT_LIB_PRAGMAS
-#           pragma comment (lib, "freeglut_static.lib")
-#       endif
+#error Static linking is not supported with this build. Please remove the FREEGLUT_STATIC preprocessor directive, or download the source code from http://freeglut.sf.net/ and build against that.
 
 /* Windows shared library (DLL) */
 #   else
@@ -113,14 +107,21 @@
  */
 #define  FREEGLUT             1
 #define  GLUT_API_VERSION     4
-#define  FREEGLUT_VERSION_2_0 1
 #define  GLUT_XLIB_IMPLEMENTATION 13
+/* Deprecated:
+   cf. http://sourceforge.net/mailarchive/forum.php?thread_name=CABcAi1hw7cr4xtigckaGXB5X8wddLfMcbA_rZ3NAuwMrX_zmsw%40mail.gmail.com&forum_name=freeglut-developer */
+#define  FREEGLUT_VERSION_2_0 1
 
 /*
  * Always include OpenGL and GLU headers
  */
-#include <GL/gl.h>
-#include <GL/glu.h>
+#if __APPLE__
+#   include <OpenGL/gl.h>
+#   include <OpenGL/glu.h>
+#else
+#   include <GL/gl.h>
+#   include <GL/glu.h>
+#endif
 
 /*
  * GLUT API macro definitions -- the special key codes:
@@ -533,6 +534,7 @@ FGAPI void    FGAPIENTRY glutSolidIcosahedron( void );
 
 /*
  * Teapot rendering functions, found in freeglut_teapot.c
+ * NB: front facing polygons have clockwise winding, not counter clockwise
  */
 FGAPI void    FGAPIENTRY glutWireTeapot( GLdouble size );
 FGAPI void    FGAPIENTRY glutSolidTeapot( GLdouble size );

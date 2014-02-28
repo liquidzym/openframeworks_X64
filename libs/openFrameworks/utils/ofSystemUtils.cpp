@@ -74,22 +74,18 @@ static void restoreAppWindowFocus(){
 
 #if defined( TARGET_LINUX ) && defined (OF_USING_GTK)
 #include <gtk/gtk.h>
-static gboolean closeGTK(GtkWidget *widget){
-	//gtk_widget_destroy(widget);
-    gtk_main_quit();
-    return (FALSE);
-}
+#include "ofGstUtils.h"
 
 static void initGTK(){
+	static bool initialized = false;
+	if(!initialized){
+		ofGstUtils::startGstMainLoop();
+	    gdk_threads_init();
 	int argc=0; char **argv = NULL;
 	gtk_init (&argc, &argv);
+		initialized = true;
+	}
 
-}
-static void startGTK(GtkWidget *dialog){
-	gtk_init_add( (GSourceFunc) closeGTK, NULL );
-	gtk_quit_add_destroy(1,GTK_OBJECT(dialog));
-	//g_timeout_add(10, (GSourceFunc) destroyWidgetGTK, (gpointer) dialog);
-	gtk_main();
 }
 
 static string gtkFileDialog(GtkFileChooserAction action,string windowTitle,string defaultName=""){
@@ -121,10 +117,14 @@ static string gtkFileDialog(GtkFileChooserAction action,string windowTitle,strin
 
 	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),defaultName.c_str());
 
+	gdk_threads_enter();
 	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
 		results = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
 	}
-	startGTK(dialog);
+	gtk_widget_destroy (dialog);
+	gdk_threads_leave();
+	//gtk_dialog_run(GTK_DIALOG(dialog));
+	//startGTK(dialog);
 	return results;
 }
 
@@ -186,8 +186,11 @@ void ofSystemAlertDialog(string errorMessage){
 	#if defined( TARGET_LINUX ) && defined (OF_USING_GTK)
 		initGTK();
 		GtkWidget* dialog = gtk_message_dialog_new (NULL, (GtkDialogFlags) 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, "%s", errorMessage.c_str());
+
+		gdk_threads_enter();
 		gtk_dialog_run (GTK_DIALOG (dialog));
-		startGTK(dialog);
+		gtk_widget_destroy (dialog);
+		gdk_threads_leave();
 	#endif
 
 	#ifdef TARGET_ANDROID
@@ -206,7 +209,9 @@ static int CALLBACK loadDialogBrowseCallback(
 ){
     string defaultPath = *(string*)lpData;
     if(defaultPath!="" && uMsg==BFFM_INITIALIZED){
-        SendMessage(hwnd,BFFM_SETSELECTION,1,(LPARAM)ofToDataPath(defaultPath).c_str());
+		wchar_t         wideCharacterBuffer[MAX_PATH];
+		wcscpy(wideCharacterBuffer, convertNarrowToWide(ofToDataPath(defaultPath)).c_str());
+        SendMessage(hwnd,BFFM_SETSELECTION,1,(LPARAM)wideCharacterBuffer);
     }
 
 	return 0;
@@ -224,27 +229,27 @@ ofFileDialogResult ofSystemLoadDialog(string windowTitle, bool bFolderSelection,
 	//------------------------------------------------------------------------------       OSX
 	//----------------------------------------------------------------------------------------
 #ifdef TARGET_OSX
-	
+
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	NSOpenPanel * loadDialog = [NSOpenPanel openPanel];
 	[loadDialog setAllowsMultipleSelection:NO];
 	[loadDialog setCanChooseDirectories:bFolderSelection];
 	[loadDialog setResolvesAliases:YES];
-	
+
 	if(!windowTitle.empty()) {
 		[loadDialog setTitle:[NSString stringWithUTF8String:windowTitle.c_str()]];
 	}
-	
+
 	if(!defaultPath.empty()) {
 		NSString * s = [NSString stringWithUTF8String:defaultPath.c_str()];
 		s = [[s stringByExpandingTildeInPath] stringByResolvingSymlinksInPath];
 		NSURL * defaultPathUrl = [NSURL fileURLWithPath:s];
 		[loadDialog setDirectoryURL:defaultPathUrl];
 	}
-	
+
 	NSInteger buttonClicked = [loadDialog runModal];
 	restoreAppWindowFocus();
-	
+
 	if(buttonClicked == NSFileHandlingPanelOKButton) {
 		NSURL * selectedFileURL = [[loadDialog URLs] objectAtIndex:0];
 		results.filePath = string([[selectedFileURL path] UTF8String]);
@@ -260,6 +265,8 @@ ofFileDialogResult ofSystemLoadDialog(string windowTitle, bool bFolderSelection,
 	//------------------------------------------------------------------------------   windoze
 	//----------------------------------------------------------------------------------------
 #ifdef TARGET_WIN32
+	wstring windowTitleW;
+	windowTitleW.assign(windowTitle.begin(), windowTitle.end());
 
 	if (bFolderSelection == false){
 
@@ -280,18 +287,28 @@ ofFileDialogResult ofSystemLoadDialog(string windowTitle, bool bFolderSelection,
 		ofn.lpstrFile = szFileName;
 #else // Visual Studio
 		wchar_t szFileName[MAX_PATH];
+		wchar_t szTitle[MAX_PATH];
 		if(defaultPath!=""){
-            wcscpy(szFileName,convertNarrowToWide(ofToDataPath(defaultPath)).c_str());
+			wcscpy_s(szFileName,convertNarrowToWide(ofToDataPath(defaultPath)).c_str());
 		}else{
 		    //szFileName = L"";
-			memset(&szFileName,  0, sizeof(szFileName));
+			memset(szFileName,  0, sizeof(szFileName));
 		}
+
+		if (windowTitle != "") {
+			wcscpy_s(szTitle, convertNarrowToWide(windowTitle).c_str());
+			ofn.lpstrTitle = szTitle;
+		} else {
+			ofn.lpstrTitle = NULL;
+		}
+
 		ofn.lpstrFilter = L"All\0";
 		ofn.lpstrFile = szFileName;
 #endif
 		ofn.nMaxFile = MAX_PATH;
 		ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
 		ofn.lpstrDefExt = 0;
+		ofn.lpstrTitle = windowTitleW.c_str();
 
 		if(GetOpenFileName(&ofn)) {
 #ifdef __MINGW32_VERSION
@@ -306,8 +323,15 @@ ofFileDialogResult ofSystemLoadDialog(string windowTitle, bool bFolderSelection,
 
 		BROWSEINFOW      bi;
 		wchar_t         wideCharacterBuffer[MAX_PATH];
+		wchar_t			wideWindowTitle[MAX_PATH];
 		LPITEMIDLIST    pidl;
 		LPMALLOC		lpMalloc;
+
+		if (windowTitle != "") {
+			wcscpy(wideWindowTitle, convertNarrowToWide(windowTitle).c_str());
+		} else {
+			wcscpy(wideWindowTitle, L"Select Directory");
+		}
 
 		// Get a pointer to the shell memory allocator
 		if(SHGetMalloc(&lpMalloc) != S_OK){
@@ -316,10 +340,11 @@ ofFileDialogResult ofSystemLoadDialog(string windowTitle, bool bFolderSelection,
 		bi.hwndOwner        =   NULL;
 		bi.pidlRoot         =   NULL;
 		bi.pszDisplayName   =   wideCharacterBuffer;
-		bi.lpszTitle        =   L"Select Directory";
-		bi.ulFlags          =   BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+		bi.lpszTitle        =   wideWindowTitle;
+		bi.ulFlags          =   BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
 		bi.lpfn             =   &loadDialogBrowseCallback;
 		bi.lParam           =   (LPARAM) &defaultPath;
+		bi.lpszTitle        =   windowTitleW.c_str();
 
 		if(pidl = SHBrowseForFolderW(&bi)){
 			// Copy the path directory to the buffer
@@ -375,10 +400,10 @@ ofFileDialogResult ofSystemSaveDialog(string defaultName, string messageName){
 	NSSavePanel * saveDialog = [NSSavePanel savePanel];
 	[saveDialog setMessage:[NSString stringWithUTF8String:messageName.c_str()]];
 	[saveDialog setNameFieldStringValue:[NSString stringWithUTF8String:defaultName.c_str()]];
-	
+
 	NSInteger buttonClicked = [saveDialog runModal];
 	restoreAppWindowFocus();
-	
+
 	if(buttonClicked == NSFileHandlingPanelOKButton){
 		results.filePath = string([[[saveDialog URL] path] UTF8String]);
 	}
@@ -444,18 +469,17 @@ ofFileDialogResult ofSystemSaveDialog(string defaultName, string messageName){
 #ifdef TARGET_WIN32
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    switch(msg)
-    {
-        /*case WM_CLOSE:
-            DestroyWindow(hwnd);
-        break;
-        case WM_DESTROY:
-            PostQuitMessage(0);
-        break;*/
-        default:
+    //switch(msg)
+    //{
+    //    case WM_CLOSE:
+    //        DestroyWindow(hwnd);
+    //    break;
+    //    case WM_DESTROY:
+    //        PostQuitMessage(0);
+    //    break;
+    //    default:
             return DefWindowProc(hwnd, msg, wParam, lParam);
-    }
-    return 0;
+    //}
 }
 #endif
 
@@ -468,11 +492,13 @@ string ofSystemTextBoxDialog(string question, string text){
 	GtkWidget* textbox = gtk_entry_new();
 	gtk_entry_set_text(GTK_ENTRY(textbox),text.c_str());
 	gtk_container_add (GTK_CONTAINER (content_area), textbox);
+	gdk_threads_enter();
 	gtk_widget_show_all (dialog);
 	if(gtk_dialog_run (GTK_DIALOG (dialog))==GTK_RESPONSE_OK){
 		text = gtk_entry_get_text(GTK_ENTRY(textbox));
 	}
-	startGTK(dialog);
+	gtk_widget_destroy (dialog);
+	gdk_threads_leave();
 #endif
 
 #ifdef TARGET_OSX

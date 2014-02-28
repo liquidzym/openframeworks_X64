@@ -1,7 +1,7 @@
 //
 // WinRegistryConfiguration.h
 //
-// $Id: //poco/1.4/Util/include/Poco/Util/WinRegistryConfiguration.h#3 $
+// $Id: //poco/1.4/Util/include/Poco/Util/WinRegistryConfiguration.h#2 $
 //
 // Library: Util
 // Package: Windows
@@ -77,9 +77,10 @@ protected:
 	void removeRaw(const std::string& key);
 
 	std::string convertToRegFormat(const std::string& key, std::string& keyName) const;
-		/// takes a key in the format of A.B.C and converts it to
+		/// Takes a key in the format of A.B.C and converts it to
 		/// registry format A\B\C, the last entry is the keyName, the rest is returned as path
 
+	friend class WinConfigurationTest;
 private:
 	std::string _rootPath;
     REGSAM _extraSam;

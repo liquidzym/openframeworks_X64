@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -28,23 +28,23 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -74,7 +74,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\..\libs\openFrameworks;..\..\..\..\libs\openFrameworks\graphics;..\..\..\..\libs\openFrameworks\app;..\..\..\..\libs\openFrameworks\sound;..\..\..\..\libs\openFrameworks\utils;..\..\..\..\libs\openFrameworks\communication;..\..\..\..\libs\openFrameworks\video;..\..\..\..\libs\openFrameworks\types;..\..\..\..\libs\openFrameworks\math;..\..\..\..\libs\openFrameworks\3d;..\..\..\..\libs\openFrameworks\gl;..\..\..\..\libs\openFrameworks\events;..\..\..\..\libs\freeglut\include;..\..\..\..\libs\rtAudio\include;..\..\..\..\libs\quicktime\include;..\..\..\..\libs\freetype\include;..\..\..\..\libs\freetype\include\freetype2;..\..\..\..\libs\freeImage\include;..\..\..\..\libs\fmodex\include;..\..\..\..\libs\videoInput\include;..\..\..\..\libs\glew\include\;..\..\..\..\libs\glu\include;..\..\..\..\libs\tess2\include;..\..\..\..\libs\cairo\include\cairo;..\..\..\..\libs\openssl\include;..\..\..\..\libs\poco\include;..\..\..\..\libs\glfw\include;..\..\..\..\libs\gstreamer\include;..\..\..\..\libs\gstreamer\include\glib-2.0;..\..\..\..\libs\gstreamer\include\gstreamer-0.10;..\..\..\..\libs\gstreamer\include\libxml2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\libs\openFrameworks;..\..\..\..\libs\openFrameworks\graphics;..\..\..\..\libs\openFrameworks\app;..\..\..\..\libs\openFrameworks\sound;..\..\..\..\libs\openFrameworks\utils;..\..\..\..\libs\openFrameworks\communication;..\..\..\..\libs\openFrameworks\video;..\..\..\..\libs\openFrameworks\types;..\..\..\..\libs\openFrameworks\math;..\..\..\..\libs\openFrameworks\3d;..\..\..\..\libs\openFrameworks\gl;..\..\..\..\libs\openFrameworks\events;..\..\..\..\libs\freeglut\include;..\..\..\..\libs\rtAudio\include;..\..\..\..\libs\quicktime\include;..\..\..\..\libs\freetype\include;..\..\..\..\libs\freetype\include\freetype2;..\..\..\..\libs\freeImage\include;..\..\..\..\libs\fmodex\include;..\..\..\..\libs\videoInput\include;..\..\..\..\libs\glew\include\;..\..\..\..\libs\glu\include;..\..\..\..\libs\tess2\include;..\..\..\..\libs\cairo\include\cairo;..\..\..\..\libs\openssl\include;..\..\..\..\libs\poco\include;..\..\..\..\libs\glfw\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;POCO_STATIC;CAIRO_WIN32_STATIC_BUILD;DISABLE_SOME_FLOATING_POINT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -99,7 +99,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\..\libs\openFrameworks;..\..\..\..\libs\openFrameworks\graphics;..\..\..\..\libs\openFrameworks\app;..\..\..\..\libs\openFrameworks\sound;..\..\..\..\libs\openFrameworks\utils;..\..\..\..\libs\openFrameworks\communication;..\..\..\..\libs\openFrameworks\video;..\..\..\..\libs\openFrameworks\types;..\..\..\..\libs\openFrameworks\math;..\..\..\..\libs\openFrameworks\3d;..\..\..\..\libs\openFrameworks\gl;..\..\..\..\libs\openFrameworks\events;..\..\..\..\libs\freeglut\include;..\..\..\..\libs\rtAudio\include;..\..\..\..\libs\quicktime\include;..\..\..\..\libs\freetype\include;..\..\..\..\libs\freetype\include\freetype2;..\..\..\..\libs\freeImage\include;..\..\..\..\libs\fmodex\include;..\..\..\..\libs\videoInput\include;..\..\..\..\libs\glew\include\;..\..\..\..\libs\glu\include;..\..\..\..\libs\tess2\include;..\..\..\..\libs\openssl\include;..\..\..\..\libs\poco\include;..\..\..\..\libs\glfw\include;..\..\..\..\libs\gstreamer\include;..\..\..\..\libs\gstreamer\include\glib-2.0;..\..\..\..\libs\gstreamer\include\gstreamer-0.10;..\..\..\..\libs\gstreamer\include\libxml2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\libs\openFrameworks;..\..\..\..\libs\openFrameworks\graphics;..\..\..\..\libs\openFrameworks\app;..\..\..\..\libs\openFrameworks\sound;..\..\..\..\libs\openFrameworks\utils;..\..\..\..\libs\openFrameworks\communication;..\..\..\..\libs\openFrameworks\video;..\..\..\..\libs\openFrameworks\types;..\..\..\..\libs\openFrameworks\math;..\..\..\..\libs\openFrameworks\3d;..\..\..\..\libs\openFrameworks\gl;..\..\..\..\libs\openFrameworks\events;..\..\..\..\libs\freeglut\include;..\..\..\..\libs\rtAudio\include;..\..\..\..\libs\quicktime\include;..\..\..\..\libs\freetype\include;..\..\..\..\libs\freetype\include\freetype2;..\..\..\..\libs\freeImage\include;..\..\..\..\libs\fmodex\include;..\..\..\..\libs\videoInput\include;..\..\..\..\libs\glew\include\;..\..\..\..\libs\glu\include;..\..\..\..\libs\tess2\include;..\..\..\..\libs\cairo\include\cairo;..\..\..\..\libs\openssl\include;..\..\..\..\libs\poco\include;..\..\..\..\libs\glfw\include;..\..\..\..\libs\gstreamer\include;..\..\..\..\libs\gstreamer\include\glib-2.0;..\..\..\..\libs\gstreamer\include\gstreamer-1.0;..\..\..\..\libs\gstreamer\include\libxml2</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;POCO_STATIC;CAIRO_WIN32_STATIC_BUILD;DISABLE_SOME_FLOATING_POINT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -123,7 +123,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\..\..\libs\openFrameworks;..\..\..\..\libs\openFrameworks\graphics;..\..\..\..\libs\openFrameworks\app;..\..\..\..\libs\openFrameworks\sound;..\..\..\..\libs\openFrameworks\utils;..\..\..\..\libs\openFrameworks\communication;..\..\..\..\libs\openFrameworks\video;..\..\..\..\libs\openFrameworks\types;..\..\..\..\libs\openFrameworks\math;..\..\..\..\libs\openFrameworks\3d;..\..\..\..\libs\openFrameworks\gl;..\..\..\..\libs\openFrameworks\events;..\..\..\..\libs\freeglut\include;..\..\..\..\libs\rtAudio\include;..\..\..\..\libs\quicktime\include;..\..\..\..\libs\freetype\include;..\..\..\..\libs\freetype\include\freetype2;..\..\..\..\libs\freeImage\include;..\..\..\..\libs\fmodex\include;..\..\..\..\libs\videoInput\include;..\..\..\..\libs\glew\include\;..\..\..\..\libs\glu\include;..\..\..\..\libs\tess2\include;..\..\..\..\libs\cairo\include\cairo;..\..\..\..\libs\openssl\include;..\..\..\..\libs\poco\include;..\..\..\..\libs\glfw\include;..\..\..\..\libs\gstreamer\include;..\..\..\..\libs\gstreamer\include\glib-2.0;..\..\..\..\libs\gstreamer\include\gstreamer-0.10;..\..\..\..\libs\gstreamer\include\libxml2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\libs\openFrameworks;..\..\..\..\libs\openFrameworks\graphics;..\..\..\..\libs\openFrameworks\app;..\..\..\..\libs\openFrameworks\sound;..\..\..\..\libs\openFrameworks\utils;..\..\..\..\libs\openFrameworks\communication;..\..\..\..\libs\openFrameworks\video;..\..\..\..\libs\openFrameworks\types;..\..\..\..\libs\openFrameworks\math;..\..\..\..\libs\openFrameworks\3d;..\..\..\..\libs\openFrameworks\gl;..\..\..\..\libs\openFrameworks\events;..\..\..\..\libs\freeglut\include;..\..\..\..\libs\rtAudio\include;..\..\..\..\libs\quicktime\include;..\..\..\..\libs\freetype\include;..\..\..\..\libs\freetype\include\freetype2;..\..\..\..\libs\freeImage\include;..\..\..\..\libs\fmodex\include;..\..\..\..\libs\videoInput\include;..\..\..\..\libs\glew\include\;..\..\..\..\libs\glu\include;..\..\..\..\libs\tess2\include;..\..\..\..\libs\cairo\include\cairo;..\..\..\..\libs\openssl\include;..\..\..\..\libs\poco\include;..\..\..\..\libs\glfw\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;POCO_STATIC;CAIRO_WIN32_STATIC_BUILD;DISABLE_SOME_FLOATING_POINT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -143,7 +143,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\..\..\libs\openFrameworks;..\..\..\..\libs\openFrameworks\graphics;..\..\..\..\libs\openFrameworks\app;..\..\..\..\libs\openFrameworks\sound;..\..\..\..\libs\openFrameworks\utils;..\..\..\..\libs\openFrameworks\communication;..\..\..\..\libs\openFrameworks\video;..\..\..\..\libs\openFrameworks\types;..\..\..\..\libs\openFrameworks\math;..\..\..\..\libs\openFrameworks\3d;..\..\..\..\libs\openFrameworks\gl;..\..\..\..\libs\openFrameworks\events;..\..\..\..\libs\freeglut\include;..\..\..\..\libs\rtAudio\include;..\..\..\..\libs\quicktime\include;..\..\..\..\libs\freetype\include;..\..\..\..\libs\freetype\include\freetype2;..\..\..\..\libs\freeImage\include;..\..\..\..\libs\fmodex\include;..\..\..\..\libs\videoInput\include;..\..\..\..\libs\glew\include\;..\..\..\..\libs\glu\include;..\..\..\..\libs\tess2\include;..\..\..\..\libs\openssl\include;..\..\..\..\libs\poco\include;..\..\..\..\libs\glfw\include;..\..\..\..\libs\gstreamer\include;..\..\..\..\libs\gstreamer\include\glib-2.0;..\..\..\..\libs\gstreamer\include\gstreamer-0.10;..\..\..\..\libs\gstreamer\include\libxml2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\libs\openFrameworks;..\..\..\..\libs\openFrameworks\graphics;..\..\..\..\libs\openFrameworks\app;..\..\..\..\libs\openFrameworks\sound;..\..\..\..\libs\openFrameworks\utils;..\..\..\..\libs\openFrameworks\communication;..\..\..\..\libs\openFrameworks\video;..\..\..\..\libs\openFrameworks\types;..\..\..\..\libs\openFrameworks\math;..\..\..\..\libs\openFrameworks\3d;..\..\..\..\libs\openFrameworks\gl;..\..\..\..\libs\openFrameworks\events;..\..\..\..\libs\freeglut\include;..\..\..\..\libs\rtAudio\include;..\..\..\..\libs\quicktime\include;..\..\..\..\libs\freetype\include;..\..\..\..\libs\freetype\include\freetype2;..\..\..\..\libs\freeImage\include;..\..\..\..\libs\fmodex\include;..\..\..\..\libs\videoInput\include;..\..\..\..\libs\glew\include\;..\..\..\..\libs\glu\include;..\..\..\..\libs\tess2\include;..\..\..\..\libs\openssl\include;..\..\..\..\libs\poco\include;..\..\..\..\libs\glfw\include;..\..\..\..\libs\gstreamer\include;..\..\..\..\libs\gstreamer\include\glib-2.0;..\..\..\..\libs\gstreamer\include\gstreamer-1.0;..\..\..\..\libs\gstreamer\include\libxml2</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;POCO_STATIC;CAIRO_WIN32_STATIC_BUILD;DISABLE_SOME_FLOATING_POINT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -231,6 +231,7 @@
     <ClInclude Include="..\..\..\openFrameworks\utils\ofXml.h" />
     <ClInclude Include="..\..\..\openFrameworks\video\ofDirectShowGrabber.h" />
     <ClInclude Include="..\..\..\openFrameworks\video\ofGstUtils.h" />
+    <ClInclude Include="..\..\..\openFrameworks\video\ofGstVideoGrabber.h" />
     <ClInclude Include="..\..\..\openFrameworks\video\ofGstVideoPlayer.h" />
     <ClInclude Include="..\..\..\openFrameworks\video\ofVideoGrabber.h" />
     <ClInclude Include="..\..\..\openFrameworks\video\ofVideoPlayer.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="..\..\..\openFrameworks\utils\ofXml.cpp" />
     <ClCompile Include="..\..\..\openFrameworks\video\ofDirectShowGrabber.cpp" />
     <ClCompile Include="..\..\..\openFrameworks\video\ofGstUtils.cpp" />
+    <ClCompile Include="..\..\..\openFrameworks\video\ofGstVideoGrabber.cpp" />
     <ClCompile Include="..\..\..\openFrameworks\video\ofGstVideoPlayer.cpp" />
     <ClCompile Include="..\..\..\openFrameworks\video\ofVideoGrabber.cpp" />
     <ClCompile Include="..\..\..\openFrameworks\video\ofVideoPlayer.cpp" />

@@ -1,7 +1,7 @@
 //
 // MapConfiguration.h
 //
-// $Id: //poco/1.4/Util/include/Poco/Util/MapConfiguration.h#2 $
+// $Id: //poco/1.4/Util/include/Poco/Util/MapConfiguration.h#1 $
 //
 // Library: Util
 // Package: Configuration
@@ -58,9 +58,6 @@ public:
 
 	void clear();
 		/// Clears the configuration.
-
-	void copyTo(AbstractConfiguration& config);
-		/// Copies all configuration properties to the given configuration.
 
 protected:
 	typedef std::map<std::string, std::string> StringMap;

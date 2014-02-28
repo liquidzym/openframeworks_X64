@@ -58,6 +58,13 @@ class ofQuickTimePlayer : public ofBaseVideoPlayer{
 		 void			firstFrame();
 		 void			nextFrame();
 		 void			previousFrame();
+		 //--------------------------------------
+		 #ifdef OF_VIDEO_PLAYER_QUICKTIME
+	    //--------------------------------------
+	     void            syncToMovie(ofPtr<ofBaseVideoPlayer> player);
+		//--------------------------------------
+	    #endif
+		//--------------------------------------
 		 
 		bool 				bHavePixelsChanged;
 		 
