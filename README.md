@@ -1,4 +1,4 @@
-openframeworks_X64
+openframeworks X64 VS2013
 ==================
 
 x64 openframeworks with VS2013
